@@ -1,0 +1,25 @@
+R4 – Roteador OSPF Área 1 / BGP AS 65002
+
+! Interfaces
+
+interface GigabitEthernet0/0
+ip address 10.2.1.2 255.255.255.252
+
+interface GigabitEthernet0/1
+ip address 10.3.4.2 255.255.255.252
+
+
+! Protocolo OSPF (Área 1)
+
+router ospf 1
+redistribute bgp 65002 subnets
+network 10.2.1.0 0.0.0.3 area 1
+
+
+! Protocolo BGP (AS 65002)
+
+router bgp 65002
+neighbor 10.3.4.1 remote-as 65004
+network 10.2.1.0 mask 255.255.255.252
+network 10.3.4.0 mask 255.255.255.252
+redistribute ospf 1

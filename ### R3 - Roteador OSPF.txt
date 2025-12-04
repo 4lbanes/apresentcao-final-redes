@@ -1,0 +1,30 @@
+### R3 - Roteador OSPF Área 0/ABR (AS 65002)
+
+! Interfaces
+interface GigabitEthernet0/0
+ ip address 192.168.3.1 255.255.255.0
+
+interface GigabitEthernet0/1
+ ip address 10.2.1.1 255.255.255.252
+
+interface GigabitEthernet0/2
+ ip address 10.2.2.1 255.255.255.252
+
+interface Serial0/0/0
+ ip address 10.3.3.2 255.255.255.252
+
+! Protocolo OSPF (ABR - conecta 3 áreas)
+router ospf 1
+ redistribute bgp 65002 subnets
+ network 192.168.3.0 0.0.0.255 area 0
+ network 10.2.1.0 0.0.0.3 area 1
+ network 10.2.2.0 0.0.0.3 area 2
+
+! Protocolo BGP
+router bgp 65002
+ neighbor 10.3.3.1 remote-as 65003
+ network 192.168.3.0
+ network 10.2.1.0 mask 255.255.255.252
+ network 10.2.2.0 mask 255.255.255.252
+ network 10.3.3.0 mask 255.255.255.252
+ redistribute ospf 1

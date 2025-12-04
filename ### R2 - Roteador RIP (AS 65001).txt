@@ -1,0 +1,26 @@
+### R2 - Roteador RIP (AS 65001)
+
+! Interfaces
+interface GigabitEthernet0/0
+ ip address 192.168.2.1 255.255.255.0
+
+interface GigabitEthernet0/1
+ ip address 10.1.1.2 255.255.255.252
+
+interface Serial0/0/0
+ ip address 10.3.2.1 255.255.255.252
+ clock rate 2000000
+
+! Protocolo RIP
+router rip
+ version 2
+ network 10.0.0.0
+ network 192.168.2.0
+ no auto-summary
+
+! Protocolo BGP
+router bgp 65001
+ neighbor 10.3.2.2 remote-as 65004
+ network 192.168.2.0
+ network 10.1.1.0 mask 255.255.255.252
+ network 10.3.2.0 mask 255.255.255.252

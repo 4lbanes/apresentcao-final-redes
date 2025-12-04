@@ -1,0 +1,36 @@
+R7 – Roteador BGP (AS 65004)
+
+! Interfaces
+
+interface GigabitEthernet0/0
+  ip address 10.3.4.1 255.255.255.252
+
+interface GigabitEthernet0/1
+  ip address 10.3.5.2 255.255.255.252
+
+interface GigabitEthernet0/2
+  no ip address
+  shutdown
+
+interface Serial0/0/0
+  ip address 10.3.2.2 255.255.255.252
+
+interface Serial0/0/1
+  no ip address
+  clock rate 2000000
+  shutdown
+
+interface Vlan1
+  no ip address
+  shutdown
+
+
+! Protocolo BGP (AS 65004)
+
+router bgp 65004
+  neighbor 10.3.5.1 remote-as 65003
+  neighbor 10.3.2.1 remote-as 65001
+  neighbor 10.3.4.2 remote-as 65002
+  network 10.3.2.0 mask 255.255.255.252
+  network 10.3.4.0 mask 255.255.255.252
+  network 10.3.5.0 mask 255.255.255.252

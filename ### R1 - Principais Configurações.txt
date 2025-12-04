@@ -1,0 +1,33 @@
+### R1 - Principais Configurações:
+
+! Interfaces
+interface GigabitEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+!
+interface GigabitEthernet0/1
+ ip address 10.1.1.1 255.255.255.252
+!
+interface Serial0/0/0
+ ip address 10.3.1.1 255.255.255.252
+!
+
+! RIP
+router rip
+ version 2
+ network 192.168.1.0
+ network 10.1.1.0
+ network 10.3.1.0
+ no auto-summary
+!
+
+! BGP
+router bgp 65001
+ neighbor 10.3.1.2 remote-as 65003
+ network 192.168.1.0
+ redistribute rip
+!
+
+! DHCP
+ip dhcp pool VOICE
+ network 192.168.1.0 255.255.255.0
+ option 150 ip 192.168.1.1
